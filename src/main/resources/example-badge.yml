@@ -1,0 +1,13 @@
+ExampleBadge:
+  displayName: ""
+  lore: ""
+  item:
+    material: "DIAMOND_HOE"
+    customData: 0
+  components:
+    - badge-tag:
+        type: "tag"
+        message: "I'm @BADGE_NAME !!"
+    - cycle-effect:
+        type: "effect"
+
