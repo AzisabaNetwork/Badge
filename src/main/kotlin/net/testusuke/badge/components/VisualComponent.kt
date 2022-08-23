@@ -5,6 +5,14 @@ package net.testusuke.badge.components
  * @author testusuke
  */
 interface VisualComponent {
+
+    /**
+     * activate component effects
+     */
     fun run()
+
+    /**
+     * destroyer
+     */
     fun destroy()
 }
