@@ -11,23 +11,21 @@ import org.bukkit.scoreboard.Objective
  */
 class TagComponent private constructor(
     name: String,
-    player: Player,
     tag: String
 ): VisualComponent {
 
     private var name: String
-    private var player: Player
     private var tag: String
     //  Object
     private lateinit var obj: Objective
+    private lateinit var player: Player
 
     init {
         this.name = name
-        this.player = player
         this.tag = tag
     }
 
-    override fun run() {
+    override fun run(player: Player) {
         val manager = Bukkit.getScoreboardManager()
         val scoreboard = manager.newScoreboard
         obj = scoreboard.registerNewObjective(
@@ -46,21 +44,16 @@ class TagComponent private constructor(
         obj.unregister()
     }
 
-    class Builder(): VisualComponentBuilder<TagComponent> {
+    class Builder(): VisualComponentBuilder {
         private val name = "TagComponent"
-        private lateinit var player: Player
         private lateinit var tag: String
-
-        fun setPlayer(player: Player) {
-            this.player = player
-        }
 
         fun setTag(tag: String) {
             this.tag = tag
         }
 
         override fun assertParameters() {
-            if (::player.isInitialized || ::tag.isInitialized) {
+            if (!::tag.isInitialized) {
                 throw VisualComponentException("Player or Tag have never been initialized")
             }
         }
@@ -72,7 +65,6 @@ class TagComponent private constructor(
             //  build
             return TagComponent(
                 name,
-                this.player,
                 this.tag
             )
         }
