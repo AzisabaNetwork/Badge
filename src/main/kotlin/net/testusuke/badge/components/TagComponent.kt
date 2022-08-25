@@ -18,7 +18,6 @@ class TagComponent private constructor(
     private var tag: String
     //  Object
     private lateinit var obj: Objective
-    private lateinit var player: Player
 
     init {
         this.name = name
