@@ -15,14 +15,35 @@ class Badge private constructor(
     private val item: ItemStack,
     private val components: MutableList<VisualComponent>
 ) {
+
+    private var activated = false
     init {
 
     }
 
     fun activate(player: Player) {
+        if (activated) {
+            throw BadgeUsedException("This badge is already activated")
+        }
+        //  active flag
+        activated = true
+
+        //  activate all components
         components.forEach{ component ->
             component.run(player)
         }
+    }
+
+    fun inactivate() {
+        components.forEach{ component ->
+            component.destroy()
+        }
+
+        activated = false
+    }
+
+    fun isActivated(): Boolean {
+        return activated
     }
 
     class Builder() {
