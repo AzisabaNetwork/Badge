@@ -32,7 +32,7 @@ class DataBase(private val plugin: JavaPlugin, private val setting: DataBaseSett
         }
     }
 
-    inline fun <T, R> query(sql: String, vararg params: T, run: ResultSet.() -> R) {
+    inline fun <R> query(sql: String, vararg params: Any, run: ResultSet.() -> R) {
         getConnection()?.use main@ { connection ->
             connection.prepareStatement(sql).use { statement ->
                 params.forEachIndexed { index, param ->
@@ -43,7 +43,7 @@ class DataBase(private val plugin: JavaPlugin, private val setting: DataBaseSett
         }
     }
 
-    fun <T> update(sql: String, vararg params: T): Int? {
+    fun update(sql: String, vararg params: Any): Int? {
         return getConnection()?.use main@ { connection ->
             connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS).use { statement ->
                 params.forEachIndexed { index, param ->
@@ -54,7 +54,7 @@ class DataBase(private val plugin: JavaPlugin, private val setting: DataBaseSett
         }
     }
 
-    fun <T> insert(sql: String, vararg params: T): ArrayList<Int>? {
+    fun insert(sql: String, vararg params: Any): ArrayList<Int>? {
         return getConnection()?.use main@ { connection ->
             connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS).use { statement ->
                 params.forEachIndexed { index, param ->
@@ -74,7 +74,7 @@ class DataBase(private val plugin: JavaPlugin, private val setting: DataBaseSett
         }
     }
 
-    fun <T> execute(sql: String, vararg options: T): Boolean? {
+    fun execute(sql: String, vararg options: Any): Boolean? {
         return getConnection()?.use main@ { connection ->
             //  execute
             connection.prepareStatement(sql).use { statement ->
