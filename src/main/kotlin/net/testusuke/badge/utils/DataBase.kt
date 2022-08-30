@@ -86,6 +86,13 @@ class DataBase(private val plugin: JavaPlugin, private val setting: DataBaseSett
         }
     }
 
+    fun existColumn(sql: String, vararg options: Any): Boolean? {
+        query(sql, options) {
+            return this.next()
+        }
+        return null
+    }
+
     private fun testConnect(): Boolean {
         plugin.logger.info("testing connection...")
         if (this.getConnection() == null) {
