@@ -46,6 +46,16 @@ class Badge private constructor(
         return activated
     }
 
+    fun clone(): Badge {
+        return Badge(
+            name,
+            displayName,
+            lore,
+            item,
+            components
+        )
+    }
+
     class Builder() {
         private lateinit var name: String
         private lateinit var displayName: String
@@ -74,13 +84,19 @@ class Badge private constructor(
         }
 
         private fun assertParameters() {
-
+            //  TODO    add validation checker
         }
 
         fun build(): Badge {
             assertParameters()
-
-            return Badge(name, displayName, lore, item, components)
+            //  create instance
+            return Badge(
+                name,
+                displayName,
+                lore,
+                item,
+                components
+            )
         }
     }
 }
