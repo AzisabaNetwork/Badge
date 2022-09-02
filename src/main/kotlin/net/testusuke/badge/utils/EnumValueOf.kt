@@ -11,7 +11,7 @@ object EnumValueOf {
      * @param T EnumType
      * @param type Value name
      */
-    inline fun <reified T : kotlin.Enum<T>> safeValueOf(type: String): T? {
+    inline fun <reified T : Enum<T>> safeValueOf(type: String): T? {
         return java.lang.Enum.valueOf(T::class.java, type)
     }
 }
