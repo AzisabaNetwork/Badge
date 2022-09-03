@@ -1,6 +1,7 @@
 package net.testusuke.badge.components
 
 import org.bukkit.Bukkit
+import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 import org.bukkit.scoreboard.DisplaySlot
 import org.bukkit.scoreboard.Objective
@@ -43,12 +44,20 @@ class TagComponent private constructor(
         obj.unregister()
     }
 
+    override fun clone(): TagComponent {
+        return TagComponent(name, tag)
+    }
+
     class Builder(): VisualComponentBuilder {
         private val name = "TagComponent"
         private lateinit var tag: String
 
         fun setTag(tag: String) {
             this.tag = tag
+        }
+
+        override fun loadFromConfiguration(config: ConfigurationSection) {
+            TODO("Not yet implemented")
         }
 
         override fun assertParameters() {

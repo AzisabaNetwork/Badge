@@ -9,17 +9,14 @@ import org.bukkit.inventory.ItemStack
  * @author testusuke
  */
 class Badge private constructor(
-    private val name: String,
-    private val displayName: String,
-    private val lore: String,
-    private val item: ItemStack,
-    private val components: MutableList<VisualComponent>
+    val name: String,
+    val displayName: String,
+    val lore: String,
+    val item: ItemStack,
+    val components: MutableList<VisualComponent>
 ) {
 
     private var activated = false
-    init {
-
-    }
 
     fun activate(player: Player) {
         if (activated) {
@@ -63,24 +60,29 @@ class Badge private constructor(
         private lateinit var item: ItemStack
         private lateinit var components: MutableList<VisualComponent>
 
-        fun setName(name: String) {
+        fun setName(name: String): Builder {
             this.name = name
+            return this
         }
 
-        fun setDisplayName(name: String) {
+        fun setDisplayName(name: String): Builder {
             this.displayName = name
+            return this
         }
 
-        fun setLore(lore: String) {
+        fun setLore(lore: String): Builder {
             this.lore = lore
+            return this
         }
 
-        fun setItem(item: ItemStack) {
+        fun setItem(item: ItemStack): Builder {
             this.item = item
+            return this
         }
 
-        fun setVisualComponents(components: MutableList<VisualComponent>) {
+        fun setVisualComponents(components: MutableList<VisualComponent>): Builder {
             this.components = components
+            return this
         }
 
         private fun assertParameters() {

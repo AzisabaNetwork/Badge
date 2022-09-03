@@ -17,4 +17,9 @@ interface VisualComponent {
      * destroyer
      */
     fun destroy()
+
+    /**
+     * Clone
+     */
+    fun clone(): VisualComponent
 }
