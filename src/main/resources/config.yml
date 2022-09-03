@@ -1,0 +1,11 @@
+# Database settings
+database:
+  host: "localhost"
+  user: "root"
+  pass: "password"
+  port: "3306"
+  db: "default_db"
+# Plugin Mode
+# < master > mode can create new Badge and change it
+# < slave > mode can only load Badges from database
+mode: "master"
