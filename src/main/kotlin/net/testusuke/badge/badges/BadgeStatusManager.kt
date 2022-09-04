@@ -1,5 +1,7 @@
 package net.testusuke.badge.badges
 
+import net.testusuke.badge.Main.Companion.database
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
 
@@ -10,6 +12,24 @@ import java.util.*
 object BadgeStatusManager {
 
     private val playerBadgeMap = mutableMapOf<String, Badge>()
+
+    fun init() {
+        //  get all status from db
+        val results = mutableMapOf<String, String>()
+        database.query(
+            "SELECT * FROM player_badge_status"
+        ) {
+            while (this.next()) {
+                results[this.getString("uuid") ?: continue] = this.getString("badge_name") ?: continue
+            }
+        }
+
+        results.forEach { (uuid, badgeName) ->
+            val player = Bukkit.getServer().getPlayer(UUID.fromString(uuid)) ?: return@forEach
+            if (!player.isOnline) return@forEach
+
+        }
+    }
 
     fun Player.setBadge(badge: Badge): Boolean {
 
