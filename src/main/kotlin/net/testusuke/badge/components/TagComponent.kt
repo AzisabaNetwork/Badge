@@ -57,7 +57,8 @@ class TagComponent private constructor(
         }
 
         override fun loadFromConfiguration(config: ConfigurationSection) {
-            TODO("Not yet implemented")
+            val message = config.getString("message") ?: throw IllegalArgumentException("missing a message argument")
+            setTag(message)
         }
 
         override fun assertParameters() {
