@@ -28,6 +28,11 @@ object BadgeStatusManager {
             val player = Bukkit.getServer().getPlayer(UUID.fromString(uuid)) ?: return@forEach
             if (!player.isOnline) return@forEach
 
+            val immutableBadge = BadgeStore.map[badgeName] ?: return@forEach
+            val badge = immutableBadge.clone()
+            badge.activate(player)
+            //  put
+            playerBadgeMap[uuid] = badge
         }
     }
 
@@ -40,6 +45,22 @@ object BadgeStatusManager {
         //  check if badge is already activated
         if (!badge.isActivated()) {
             badge.activate(this)
+        }
+
+        //  database
+        if(database.existColumn("SELECT * FROM player_badge_status WHERE `uuid`=?", this.uniqueId.toString()) == true) {
+            //  update
+            database.update(
+                "UPDATE player_badge_status SET `badge_name`=?",
+                badge.name
+            )
+        } else {
+            //  insert
+            database.execute(
+                "INSERT INTO player_badge_status (`uuid`, `badge_name`) VALUES (?, ?)",
+                this.uniqueId.toString(),
+                badge.name
+            )
         }
 
         playerBadgeMap[this.uniqueId.toString()] = badge
@@ -55,10 +76,30 @@ object BadgeStatusManager {
         //  inactive
         badge.inactivate()
 
+        //  database
+        database.execute(
+            "DELETE FROM player_badge_status WHERE `uuid`=?",
+            this.uniqueId.toString()
+        )
+
         //  delete player status
         playerBadgeMap.remove(this.uniqueId.toString())
 
         return true
+    }
+
+    fun Player.fetchBadge() {
+        //  database
+        database.query(
+            "SELECT FROM player_badge_status WHERE `uuid`=?",
+            this.uniqueId.toString()
+        ) {
+            if (this.next()) {
+                val name = this.getString("badge_name")
+                val immutableBadge = BadgeStore.map[name] ?: return
+                immutableBadge.clone().activate(this@fetchBadge)
+            }
+        }
     }
 
     fun Player.isUsingBadge(): Boolean = this.getBadge() != null
